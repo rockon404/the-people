@@ -1,5 +1,6 @@
 export const TOKEN_KEY = '_k';
 export const LOCALE_KEY = '_lang';
+export const GOOGLE_MAPS_API_KEY = 'AIzaSyD_Au_tY5b-oFeHpXLpcZQsDfTPKLl1vBg';
 
 export enum RequestHeaders {
   AcceptLanguage = 'Accept-Language',
@@ -11,7 +12,7 @@ export enum UserTypes {
   ContentManager = 'content',
 }
 
-export enum EventType {
+export enum AppEventTypes {
   Cinema = 'cinema',
   Concerts = 'concerts',
   Theatre = 'theatre',

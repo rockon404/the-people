@@ -1,3 +1,5 @@
+import { AppEventTypes } from '../constants';
+
 export interface AppStorage {
   get: (key: string) => string | undefined;
   set: (key: string, value: any, options?: any) => void;
@@ -34,20 +36,29 @@ export interface Place {
   location: [number, number];
 }
 
-export interface Event {
+export interface AppEvent {
+  id: string;
   slug: string;
+  type: AppEventTypes;
   title: string;
   place: string;
   image: string;
+  date: string;
+  created_at: string;
+  expires_at: string;
   description: string;
-  properties: {
+  short_description: string;
+  properties?: {
     key: string;
     value: string;
   }[];
 }
 
-export interface Notification {
+export interface AppNotification {
   id: string;
+  from: string;
+  created_at: string;
+  expires_at: string;
   slug: string;
   title: string;
   description: string;
@@ -69,23 +80,32 @@ export interface AuthState {
 export interface NotificationsState {
   isFetching: boolean;
   error: null;
-  items: Notification[];
+  items: AppNotification[];
 }
 
 export interface EventsState {
   isFetching: boolean;
   error: null;
-  items: Event[];
+  items: AppEvent[];
+  linked: {
+    places? : Place[];
+  };
+}
+
+export interface EventState {
+  isFetching: boolean;
+  error: null;
+  item: AppEvent;
   linked: {
     places?: Place[];
   };
 }
 
-
 export interface StoreState {
   general: GeneralState;
   auth: AuthState;
   events: EventsState;
+  event: EventState;
   notifications: NotificationsState;
 }
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from '../logo.svg';
+import Feed from '../components/Main/Feed';
+import Map from '../components/Map';
+import {GOOGLE_MAPS_API_KEY} from '../constants';
 const Wrapper = styled.div`
   
 `;
@@ -9,26 +11,24 @@ interface Props {
 
 }
 
-const Main: React.FC<Props> = ({}) => {
+const MapWrapper = styled.div`
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px;
+  height: 400px;
+`;
+
+const Main: React.FC<Props> = () => {
 
   return (
     <Wrapper>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Feed />
+      <Map
+        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<MapWrapper />}
+        mapElement={<div style={{ height: `100%` }} />}
+      />
     </Wrapper>
   );
 };

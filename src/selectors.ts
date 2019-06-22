@@ -39,5 +39,14 @@ export const eventsStateSelector = (state: StoreState) => state.events;
 
 export const eventsListSelector = createSelector(
   eventsStateSelector,
-  notifications => notifications.items,
+  events => events.items,
+);
+
+// Event
+
+export const eventStateSelector = (state: StoreState) => state.event;
+
+export const eventSelector = createSelector(
+  eventStateSelector,
+  event => event.item,
 );

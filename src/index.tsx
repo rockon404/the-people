@@ -6,8 +6,11 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configureStore';
+import clientInit from './actions/clientInit';
 
 const store = configureStore();
+
+store.dispatch(clientInit());
 
 const root = (
   <Provider store={store}>
