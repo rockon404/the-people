@@ -20,7 +20,8 @@ import {RouteComponentProps, withRouter} from 'react-router';
 import logo from '../logo.png';
 import {connect, DispatchProp} from 'react-redux';
 import {AppEventType, StoreState} from '../types';
-import {eventTypesSelector} from '../selectors';
+import {eventTypesSelector, isSignedInSelector} from '../selectors';
+import {Link} from 'react-router-dom';
 
 const Wrapper = styled.div`
   
@@ -31,12 +32,21 @@ const Logo = styled.img`
   
 `;
 
+const Bottom = styled(Link)`
+  text-decoration: none;
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  color: gray;
+`;
+
 interface OwnProps {
 
 }
 
 interface ConnectedProps {
   eventTypes: AppEventType[];
+  isSignedIn: boolean;
 }
 
 type Props = OwnProps & ConnectedProps & RouteComponentProps<any> & DispatchProp<any>;
@@ -105,7 +115,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Header: React.FC<Props> = ({ eventTypes, history }) => {
+const Header: React.FC<Props> = ({ eventTypes, history, isSignedIn }) => {
   // @ts-ignore
   const classes = useStyles();
   const theme = useTheme();
@@ -170,6 +180,7 @@ const Header: React.FC<Props> = ({ eventTypes, history }) => {
             </ListItem>
           ))}
         </List>
+        <Bottom onClick={handleDrawerClose} to={isSignedIn ? '/dashboard' : '/login'}>Партнерам</Bottom>
       </Drawer>
     </Wrapper>
   );
@@ -177,6 +188,7 @@ const Header: React.FC<Props> = ({ eventTypes, history }) => {
 
 const mapStateToProps = (state: StoreState) => ({
   eventTypes: eventTypesSelector(state),
+  isSignedIn: isSignedInSelector(state),
 });
 
 export default connect(mapStateToProps)(withRouter(Header));

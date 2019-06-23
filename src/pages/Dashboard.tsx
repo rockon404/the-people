@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import styled from 'styled-components';
-import Paper from '@material-ui/core/Paper/Paper';
 import { notificationsListSelector } from '../selectors';
 import {AppNotification, StoreState} from '../types';
 import {connect, DispatchProp} from 'react-redux';
@@ -26,7 +25,10 @@ interface ConnectedProps {
 
 type Props = OwnProps & ConnectedProps & DispatchProp<any> & RouteComponentProps;
 
-const Dashboard: React.FC<Props> = ({ notifications }) => {
+const Dashboard: React.FC<Props> = ({ notifications, history }) => {
+  const handleClick = useCallback(() => {
+    history.push('/dashboard/add_notification');
+  }, []);
 
   return (
     <Wrapper>
@@ -40,6 +42,7 @@ const Dashboard: React.FC<Props> = ({ notifications }) => {
         fullWidth
         variant="contained"
         color="primary"
+        onClick={handleClick}
       >
         Добавить
       </Button>

@@ -29,4 +29,13 @@ reducer.on(actions.deleteNotificationSucceeded, (state, { notifications }) => ({
 
 reducer.on(actions.deleteNotificationFailed, fetchFailedHandler);
 
+reducer.on(actions.addNotificationRequest, fetchRequestHandler);
+
+reducer.on(actions.addNotificationSucceeded, (state, { notifications }) => ({
+  ...state,
+  items: notifications,
+}));
+
+reducer.on(actions.addNotificationFailed, fetchFailedHandler);
+
 export default reducer;

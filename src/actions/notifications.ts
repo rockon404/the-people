@@ -36,3 +36,20 @@ export const deleteNotification = (slug: string) => (dispatch: Dispatch, getStat
     dispatch(deleteNotificationFailed(mapAxiosError(error)));
   }
 };
+
+export const [
+  addNotificationRequest,
+  addNotificationSucceeded,
+  addNotificationFailed,
+] = createRequestActions<{ notifications: AppNotification[] }>('ADD_NOTIFICATION');
+
+export const addNotification = (notification: AppNotification) => (dispatch: Dispatch, getState: () => StoreState) => {
+  try {
+    dispatch(addNotificationRequest());
+    const notifications = notificationsListSelector(getState());
+    const newNotifications = [ ...notifications, notification ];
+    dispatch(addNotificationSucceeded({ notifications: newNotifications  }))
+  } catch (error) {
+    dispatch(addNotificationFailed(mapAxiosError(error)));
+  }
+};
