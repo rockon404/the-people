@@ -1,14 +1,20 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, { useCallback, useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {connect, DispatchProp} from 'react-redux';
 import {StoreState} from '../types';
+import {authErrorSelector, isSignedInSelector} from '../selectors';
+import { login } from '../actions/auth';
+import {Redirect} from 'react-router';
+import styled from 'styled-components';
+
+const Error = styled.div`
+  color: red;
+`;
 
 const useStyles: any = makeStyles(theme => ({
   '@global': {
@@ -36,23 +42,29 @@ const useStyles: any = makeStyles(theme => ({
 }));
 
 interface OwnProps {
-
+  isSignedIn: boolean;
+  error: {
+    message: string;
+  };
 }
 
 type Props =  OwnProps & DispatchProp<any>;
 
-const SignIn: React.FC<Props> = ({ dispatch }) => {
+const SignIn: React.FC<Props> = ({ dispatch, isSignedIn, error }) => {
   const classes = useStyles();
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  console.log('xxx', emailRef.current && emailRef.current.value);
   const submit = useCallback((e) => {
     e.preventDefault();
-    
-    const email = emailRef.current;
-    const password = passwordRef.current;
 
-    dispatch({ email, password });
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+
+    dispatch(login(email, password));
   }, [emailRef, passwordRef]);
+
+  if (isSignedIn) return <Redirect to="/dashboard" />;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -63,7 +75,7 @@ const SignIn: React.FC<Props> = ({ dispatch }) => {
         </Typography>
         <form className={classes.form} noValidate onSubmit={submit}>
           <TextField
-            ref={emailRef}
+            inputRef={emailRef}
             variant="outlined"
             margin="normal"
             required
@@ -75,7 +87,7 @@ const SignIn: React.FC<Props> = ({ dispatch }) => {
             autoFocus
           />
           <TextField
-            ref={passwordRef}
+            inputRef={passwordRef}
             variant="outlined"
             margin="normal"
             required
@@ -95,6 +107,7 @@ const SignIn: React.FC<Props> = ({ dispatch }) => {
           >
             Sign In
           </Button>
+          {error && <Error>{error.message}</Error>}
         </form>
       </div>
     </Container>
@@ -102,7 +115,8 @@ const SignIn: React.FC<Props> = ({ dispatch }) => {
 };
 
 const mapStateToProps = (state: StoreState) => ({
-
+  error: authErrorSelector(state),
+  isSignedIn: isSignedInSelector(state),
 });
 
-export default connect()(SignIn);
+export default connect(mapStateToProps)(SignIn);

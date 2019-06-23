@@ -46,7 +46,7 @@ const EventPreview: React.FC<Props> = ({ event }) => {
           <StyledLink to={`/event/${event.slug}`}>
             <Typography variant="h6" gutterBottom>{event.title}</Typography>
           </StyledLink>
-          <Typography component="p">{event.description}</Typography>
+          <Typography component="p">{event.short_description}</Typography>
         </div>
       </Inner>
     </Wrapper>

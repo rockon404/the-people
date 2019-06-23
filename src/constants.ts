@@ -7,7 +7,7 @@ export enum RequestHeaders {
   Authorization = 'Authorization',
 }
 
-export enum UserTypes {
+export enum UserRoles {
   GovernmentManager = 'government',
   ContentManager = 'content',
 }

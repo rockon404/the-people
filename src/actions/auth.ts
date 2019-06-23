@@ -1,12 +1,13 @@
-import { Dispatch } from 'redux';
-import { StoreState } from '../types';
-import { AxiosInstance } from 'axios';
+import {AnyAction, Dispatch} from 'redux';
+import {StoreState, User} from '../types';
 import { RequestHeaders, TOKEN_KEY } from '../constants';
 import { createAction } from 'redux-act';
 import { createRequestActions } from '../utils/reduxHelpers';
-import mapAxiosError from '../utils/mapAxiosError';
 import storage from '../utils/storage.web';
 import axios from 'axios';
+import {users} from '../mockData';
+import {ThunkDispatch} from 'redux-thunk';
+import {tokenSelector} from '../selectors';
 
 export const logoutAction = createAction('LOGOUT');
 
@@ -24,47 +25,31 @@ export function logout() {
   };
 }
 
-export const [requestSecretCodeRequest, requestSecretCodeSucceeded, requestSecretCodeFailed] = createRequestActions(
-  'REQUEST_SECRET_CODE',
-);
+export const [
+  loginRequest,
+  loginSucceeded,
+  loginFailed,
+] = createRequestActions<{ user: User, token: string }>('LOGIN');
 
-export const requestSecretCode = (email: string) => async (
-  dispatch: Dispatch,
-  getState: StoreState,
-  axios: AxiosInstance,
-) => {
-  try {
-    dispatch(requestSecretCodeRequest());
-
-    const { data } = await axios.post('/auth/email/', { email });
-
-    dispatch(requestSecretCodeSucceeded(data));
-  } catch (err) {
-    const error = mapAxiosError(err);
-    dispatch(requestSecretCodeFailed(error));
-  }
-};
-
-export const [loginRequest, loginSucceeded, loginFailed] = createRequestActions('LOGIN');
-
-const login = (email: string, secret_code: string) => async (
-  dispatch: Dispatch,
-  getState: StoreState,
-  axios: AxiosInstance,
-) => {
+export const login = (email: string, password: string) => async (dispatch: ThunkDispatch<StoreState, {}, AnyAction>) => {
   try {
     dispatch(loginRequest());
 
-    const { data } = await axios.post('/auth/email/', { email, secret_code });
+    const user = users.find(user => user.email === email && user.password === password);
 
-    dispatch(loginSucceeded(data));
+    if (!user) {
+      throw new Error('Wrong password or email');
+    }
+
+    dispatch(loginSucceeded({ user, token: user.slug }));
+    dispatch(setToken(user.slug));
   } catch (err) {
-    const error = mapAxiosError(err);
-    dispatch(loginFailed(error));
+    console.log('error', err);
+    dispatch(loginFailed({ message: err.message }));
   }
 };
 
-const setTokenAction = createAction<string>('SET_TOKEN');
+export const setTokenAction = createAction<string>('SET_TOKEN');
 
 export function setToken(token: string) {
   return async (dispatch: Dispatch<any>) => {
@@ -74,16 +59,23 @@ export function setToken(token: string) {
   };
 }
 
-export function register(email: string, full_name: string) {
-  return async (dispatch: Dispatch<any>) => {
-    try {
-      const res = await axios.post('/users/', {
-        user: { email, full_name },
-      });
-      if (res.data) await dispatch(setToken(res.data.token));
-      return res;
-    } catch (err) {
-      return mapAxiosError(err);
-    }
-  };
-}
+export const [
+  fetchUserRequest,
+  fetchUserSucceeded,
+  fetchUserFailed,
+] = createRequestActions<User>('FETCH_USER');
+
+export const fetchUser = () =>
+  async (dispatch: ThunkDispatch<StoreState, {}, AnyAction>, getState: () => StoreState) => {
+  try {
+    dispatch(fetchUserRequest());
+
+    const token = tokenSelector(getState());
+    const user = users.find(user => user.slug === token);
+    console.log('user', user);
+    dispatch(fetchUserSucceeded(user));
+  } catch (err) {
+    console.log('error', err);
+    dispatch(fetchUserFailed({ message: err.message }));
+  }
+};

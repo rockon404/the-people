@@ -1,4 +1,4 @@
-import { AppEventTypes } from '../constants';
+import {AppEventTypes, UserRoles} from '../constants';
 
 export interface AppStorage {
   get: (key: string) => string | undefined;
@@ -21,11 +21,13 @@ export interface UserAgent {
 
 export interface User {
   id: string;
-  created_at: string;
-  deleted_at: string;
-  last_activity_at: string;
+  slug: string;
+  password: string;
   email: string;
-  full_name: string;
+  title: string;
+  phone: string;
+  address: string;
+  role: UserRoles;
 }
 
 export interface Place {
@@ -88,7 +90,7 @@ export interface EventsState {
   error: null;
   items: AppEvent[];
   linked: {
-    places? : Place[];
+    places? : { [slug: string]: Place };
   };
 }
 
@@ -97,7 +99,17 @@ export interface EventState {
   error: null;
   item: AppEvent;
   linked: {
-    places?: Place[];
+    place?: Place;
+  };
+}
+
+export interface NotificationState {
+  isFetching: boolean;
+  error: null;
+  item: AppNotification;
+  linked: {
+    place?: Place[];
+    user?: User;
   };
 }
 
@@ -107,6 +119,7 @@ export interface StoreState {
   events: EventsState;
   event: EventState;
   notifications: NotificationsState;
+  notification: NotificationState;
 }
 
 

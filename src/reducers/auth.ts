@@ -12,19 +12,29 @@ const initialState: AuthState = {
 
 const reducer = createReducer<AuthState>({}, initialState);
 
+reducer.on(actions.setTokenAction, (state, token) => ({ ...state, token }));
+
 reducer.on(actions.logoutAction, state => ({
   ...state,
   user: null,
   token: null,
 }));
 
-reducer.on(actions.requestSecretCodeRequest, fetchRequestHandler);
-
-reducer.on(actions.requestSecretCodeSucceeded, state => ({
+reducer.on(actions.loginSucceeded, (state, { user, token }) => ({
   ...state,
   isFetching: false,
+  user,
+  token,
 }));
 
-reducer.on(actions.requestSecretCodeFailed, fetchFailedHandler);
+reducer.on(actions.fetchUserSucceeded, (state, user) => ({
+  ...state,
+  isFetching: false,
+  user,
+}));
+
+reducer.on(actions.loginRequest, fetchRequestHandler);
+
+reducer.on(actions.loginFailed, fetchFailedHandler);
 
 export default reducer;

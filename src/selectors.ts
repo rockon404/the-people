@@ -14,9 +14,14 @@ export const isSignedInSelector = createSelector(
   auth => Boolean(auth.user) && Boolean(auth.user.id),
 );
 
-export const meSelector = createSelector(
+export const userSelector = createSelector(
   authSelector,
   auth => auth.user,
+);
+
+export const authErrorSelector = createSelector(
+  authSelector,
+  auth => auth.error,
 );
 
 export const tokenSelector = createSelector(
@@ -33,6 +38,15 @@ export const notificationsListSelector = createSelector(
   notifications => notifications.items,
 );
 
+// Notification
+
+export const notificationStateSelector = (state: StoreState) => state.notification;
+
+export const notificationSelector = createSelector(
+  notificationStateSelector,
+  notification => notification.item,
+);
+
 // Events
 
 export const eventsStateSelector = (state: StoreState) => state.events;
@@ -42,6 +56,16 @@ export const eventsListSelector = createSelector(
   events => events.items,
 );
 
+export const eventsLinkedDataSelector = createSelector(
+  eventsStateSelector,
+  events => events.linked,
+);
+
+export const eventsPlaceSelector = createSelector(
+  eventsLinkedDataSelector,
+  linked => linked.places,
+);
+
 // Event
 
 export const eventStateSelector = (state: StoreState) => state.event;
@@ -49,4 +73,14 @@ export const eventStateSelector = (state: StoreState) => state.event;
 export const eventSelector = createSelector(
   eventStateSelector,
   event => event.item,
+);
+
+export const eventLinkedDataSelector = createSelector(
+  eventStateSelector,
+  event => event.linked,
+);
+
+export const eventPlaceSelector = createSelector(
+  eventLinkedDataSelector,
+  linked => linked.place,
 );

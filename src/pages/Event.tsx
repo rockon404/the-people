@@ -7,15 +7,19 @@ import { fetchEventBySlug } from '../actions/event';
 import { RouteComponentProps } from 'react-router';
 import { eventSelector } from '../selectors';
 import media from '../utils/media';
+import {GOOGLE_MAPS_API_KEY} from '../constants';
+import Map from '../components/Map';
 
 const Wrapper = styled.div`
-  width: 1024px;
+  width: 680px;
   max-width: 100%;
   margin: 0 auto;
+  padding: 16px;
 `;
 
 const Top = styled.div`
   display: flex;
+  margin-bottom: 16px;
   
   ${media.mobile`
     flex-direction: column;
@@ -34,6 +38,13 @@ const Img = styled.img`
     width:  100%;
     margin-bottom: 16px;
   `}
+`;
+
+const MapWrapper = styled.div`
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px;
+  height: 400px;
 `;
 
 interface OwnProps {
@@ -59,9 +70,16 @@ const Event: React.FC<Props> = ({ event, dispatch, match }) => {
         <Img src={event.image} />
         <div>
           <Typography variant="h6" gutterBottom>{event.title}</Typography>
-          <Typography component="p">{event.description}</Typography>
+          <Typography component="p">{event.short_description}</Typography>
         </div>
       </Top>
+      <Typography component="p">{event.description}</Typography>
+      <Map
+        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<MapWrapper />}
+        mapElement={<div style={{ height: `100%` }} />}
+      />
     </Wrapper>
   );
 };

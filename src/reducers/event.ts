@@ -15,9 +15,10 @@ const reducer = createReducer<EventState>({}, initialState);
 
 reducer.on(actions.fetchEventRequest, fetchRequestHandler);
 
-reducer.on(actions.fetchEventSucceeded, (state, { event }) => ({
+reducer.on(actions.fetchEventSucceeded, (state, { event, linked }) => ({
   ...state,
   item: event,
+  linked,
 }));
 
 reducer.on(actions.fetchEventFailed, fetchFailedHandler);

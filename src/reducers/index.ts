@@ -4,6 +4,7 @@ import auth from './auth';
 import notifications from './notifications';
 import events from './events';
 import event from './event';
+import notification from './notification';
 
 import { StoreState } from '../types';
 
@@ -13,4 +14,5 @@ export default combineReducers<StoreState>({
   notifications,
   events,
   event,
+  notification,
 });

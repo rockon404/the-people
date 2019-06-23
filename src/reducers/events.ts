@@ -8,16 +8,19 @@ const initialState: EventsState = {
   isFetching: false,
   items: [],
   error: null,
-  linked: {},
+  linked: {
+    places: {},
+  },
 };
 
 const reducer = createReducer<EventsState>({}, initialState);
 
 reducer.on(actions.fetchEventsRequest, fetchRequestHandler);
 
-reducer.on(actions.fetchEventsSucceeded, (state, { events }) => ({
+reducer.on(actions.fetchEventsSucceeded, (state, { events, linked }) => ({
   ...state,
   items: events,
+  linked,
 }));
 
 reducer.on(actions.fetchEventsFailed, fetchFailedHandler);
