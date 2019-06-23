@@ -6,19 +6,21 @@ const Wrapper = styled.div`
   
 `;
 
-interface OwnProps {}
+interface OwnProps {
+  marker: [number, number];
+}
 
 type Props = OwnProps & WithGoogleMapProps;
 
-const Map: React.FC<Props> = (props) => {
+const Map: React.FC<Props> = ({ marker }) => {
 
   return (
     <Wrapper>
       <GoogleMap
         defaultZoom={12}
-        defaultCenter={{ lat: 54.70649, lng: 20.51095 }}
+        defaultCenter={marker ? { lat: marker[0], lng: marker[1] } : { lat: 54.70649, lng: 20.51095 }}
       >
-        <Marker position={{ lat: 54.70649, lng: 20.51095 }} />
+        {marker && <Marker position={{ lat: marker[0], lng: marker[1] }} />}
       </GoogleMap>
     </Wrapper>
   );

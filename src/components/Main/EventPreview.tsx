@@ -12,7 +12,7 @@ const StyledLink = styled(Link)`
 
 const Wrapper = styled(Paper)`
   padding: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 `;
 
 const Inner = styled.div`

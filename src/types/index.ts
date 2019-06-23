@@ -38,6 +38,11 @@ export interface Place {
   location: [number, number];
 }
 
+export interface AppEventType {
+  slug: AppEventTypes;
+  title: string;
+}
+
 export interface AppEvent {
   id: string;
   slug: string;
@@ -69,7 +74,7 @@ export interface AppNotification {
 // Store
 
 export interface GeneralState {
-
+  eventTypes: AppEventType[];
 }
 
 export interface AuthState {

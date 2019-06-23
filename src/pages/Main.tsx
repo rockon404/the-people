@@ -14,7 +14,6 @@ interface Props {
 const MapWrapper = styled.div`
   max-width: 680px;
   margin: 0 auto;
-  padding: 16px;
   height: 400px;
 `;
 

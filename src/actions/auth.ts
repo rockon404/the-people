@@ -44,7 +44,6 @@ export const login = (email: string, password: string) => async (dispatch: Thunk
     dispatch(loginSucceeded({ user, token: user.slug }));
     dispatch(setToken(user.slug));
   } catch (err) {
-    console.log('error', err);
     dispatch(loginFailed({ message: err.message }));
   }
 };
@@ -69,13 +68,10 @@ export const fetchUser = () =>
   async (dispatch: ThunkDispatch<StoreState, {}, AnyAction>, getState: () => StoreState) => {
   try {
     dispatch(fetchUserRequest());
-
     const token = tokenSelector(getState());
     const user = users.find(user => user.slug === token);
-    console.log('user', user);
     dispatch(fetchUserSucceeded(user));
   } catch (err) {
-    console.log('error', err);
     dispatch(fetchUserFailed({ message: err.message }));
   }
 };

@@ -15,9 +15,11 @@ const reducer = createReducer<NotificationState>({}, initialState);
 
 reducer.on(actions.fetchNotificationRequest, fetchRequestHandler);
 
-reducer.on(actions.fetchNotificationSucceeded, (state, { notification }) => ({
+reducer.on(actions.fetchNotificationSucceeded, (state, { notification, linked }) => ({
   ...state,
   item: notification,
+  isFetching: false,
+  linked,
 }));
 
 reducer.on(actions.fetchNotificationFailed, fetchFailedHandler);

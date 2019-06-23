@@ -1,20 +1,22 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
-import { AppEvent, StoreState } from '../types';
+import {AppEvent, AppEventType, Place, StoreState} from '../types';
 import { connect, DispatchProp } from 'react-redux';
 import { fetchEventBySlug } from '../actions/event';
 import { RouteComponentProps } from 'react-router';
-import { eventSelector } from '../selectors';
+import {eventPlaceSelector, eventSelector, eventTypesSelector} from '../selectors';
 import media from '../utils/media';
 import {GOOGLE_MAPS_API_KEY} from '../constants';
 import Map from '../components/Map';
+import formatDate from '../utils/formatDate';
+import Phone from '../components/core/Phone';
+import Address from '../components/core/Address';
 
 const Wrapper = styled.div`
   width: 680px;
   max-width: 100%;
   margin: 0 auto;
-  padding: 16px;
 `;
 
 const Top = styled.div`
@@ -42,8 +44,7 @@ const Img = styled.img`
 
 const MapWrapper = styled.div`
   max-width: 680px;
-  margin: 0 auto;
-  padding: 16px;
+  margin: 16px auto;
   height: 400px;
 `;
 
@@ -53,11 +54,13 @@ interface OwnProps {
 
 interface ConnectedProps {
   event: AppEvent;
+  place: Place;
+  eventTypes: AppEventType[];
 }
 
 type Props = OwnProps & ConnectedProps & DispatchProp<any> & RouteComponentProps<{ slug: string }>;
 
-const Event: React.FC<Props> = ({ event, dispatch, match }) => {
+const Event: React.FC<Props> = ({ event, place, dispatch, match, eventTypes }) => {
   useEffect(() => {
     dispatch(fetchEventBySlug(match.params.slug));
   }, [match.params.slug]);
@@ -70,11 +73,14 @@ const Event: React.FC<Props> = ({ event, dispatch, match }) => {
         <Img src={event.image} />
         <div>
           <Typography variant="h6" gutterBottom>{event.title}</Typography>
-          <Typography component="p">{event.short_description}</Typography>
+          <Typography component="p">{formatDate(new Date(event.date))}</Typography>
         </div>
       </Top>
+      <Address>{place.title} / {place.address}</Address>
+      <Phone>{place.phone}</Phone>
       <Typography component="p">{event.description}</Typography>
       <Map
+        marker={place.location}
         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
         loadingElement={<div style={{ height: `100%` }} />}
         containerElement={<MapWrapper />}
@@ -86,6 +92,8 @@ const Event: React.FC<Props> = ({ event, dispatch, match }) => {
 
 const mapStateToProps = (state: StoreState) => ({
   event: eventSelector(state),
+  place: eventPlaceSelector(state),
+  eventTypes: eventTypesSelector(state),
 });
 
 export default connect(mapStateToProps)(Event);

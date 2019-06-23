@@ -54,7 +54,7 @@ const SignIn: React.FC<Props> = ({ dispatch, isSignedIn, error }) => {
   const classes = useStyles();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-  console.log('xxx', emailRef.current && emailRef.current.value);
+
   const submit = useCallback((e) => {
     e.preventDefault();
 
@@ -71,7 +71,7 @@ const SignIn: React.FC<Props> = ({ dispatch, isSignedIn, error }) => {
       <CssBaseline />
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
-          Sign in
+          Панель управления
         </Typography>
         <form className={classes.form} noValidate onSubmit={submit}>
           <TextField
@@ -81,7 +81,7 @@ const SignIn: React.FC<Props> = ({ dispatch, isSignedIn, error }) => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Email"
             name="email"
             autoComplete="email"
             autoFocus
@@ -93,7 +93,7 @@ const SignIn: React.FC<Props> = ({ dispatch, isSignedIn, error }) => {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Пароль"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -105,7 +105,7 @@ const SignIn: React.FC<Props> = ({ dispatch, isSignedIn, error }) => {
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            Вход
           </Button>
           {error && <Error>{error.message}</Error>}
         </form>

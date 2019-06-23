@@ -5,6 +5,11 @@ import { createSelector } from 'reselect';
 
 export const generalSelector = (state: StoreState) => state.general;
 
+export const eventTypesSelector = createSelector(
+  generalSelector,
+  general => general.eventTypes,
+);
+
 // Auth
 
 export const authSelector = (state: any) => state.auth;
@@ -47,6 +52,16 @@ export const notificationSelector = createSelector(
   notification => notification.item,
 );
 
+export const notificationLinkedDataSelector = createSelector(
+  notificationStateSelector,
+  notification => notification.linked,
+);
+
+export const notificationUserSelector = createSelector(
+  notificationLinkedDataSelector,
+  linked => linked.user,
+);
+
 // Events
 
 export const eventsStateSelector = (state: StoreState) => state.events;
@@ -61,7 +76,7 @@ export const eventsLinkedDataSelector = createSelector(
   events => events.linked,
 );
 
-export const eventsPlaceSelector = createSelector(
+export const eventsPlacesSelector = createSelector(
   eventsLinkedDataSelector,
   linked => linked.places,
 );

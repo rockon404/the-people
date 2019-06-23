@@ -1,10 +1,10 @@
-import {AppEvent, AppNotification, Place, User} from './types';
+import {AppEvent, AppEventType, AppNotification, Place, User} from './types';
 import {AppEventTypes, UserRoles} from './constants';
 
 export const notifications: AppNotification[] = [
   {
     id: 'aedc8-9aefd-aedc8-9aefd-c654a',
-    from: 'mchs-russia',
+    from: 'mchs_kaliningrad',
     slug: 'mchs-russia-preduprejdaet-2019-07-26',
     description: 'Завтра, 23 июня, в области прогнозируется шквалистый ветер с усилением до 15-20 метров в секунду. Согласно данным синоптиков, в северной части области пройдут дожди с грозами. Локально выпадет град.',
     created_at: '2019-07-26T03:24:00',
@@ -19,7 +19,7 @@ export const users: User[] = [
     slug: 'mchs_kaliningrad',
     email: 'info@mchs.ru',
     title: 'МЧС России',
-    phone: '17-85-00',
+    phone: '8(401)253-46-71',
     address: 'г. Калининград, Советский пр. 1',
     password: '123456',
     role: UserRoles.GovernmentManager,
@@ -29,7 +29,7 @@ export const users: User[] = [
     slug: 'mchs_kaliningrad',
     email: 'info@mchs.ru',
     title: 'МЧС России',
-    phone: '17-85-00',
+    phone: '8(401)253-46-71',
     address: 'г. Калининград, Советский пр. 1',
     password: '123456',
     role: UserRoles.GovernmentManager,
@@ -99,6 +99,45 @@ export const places: Place[] = [
     slug: 'stadion-kaliningrad',
     title: 'стадион Калининград',
     address: 'ул. Солнечный бул, Калининград, Калининградская обл., 236006',
-    location: [54.7293504,20.4851602],
+    location: [54.7163831,20.5064034],
+  }
+];
+
+export const eventTypes: AppEventType[] = [
+  {
+    slug: AppEventTypes.Exhibitions,
+    title: 'Выставки',
+  },
+  {
+    slug: AppEventTypes.Sport,
+    title: 'Спорт',
+  },
+  {
+    slug: AppEventTypes.Concerts,
+    title: 'Концерты',
+  },
+  {
+    slug: AppEventTypes.Cinema,
+    title: 'Кино',
+  },
+  {
+    slug: AppEventTypes.Festival,
+    title: 'Фестивали',
+  },
+  {
+    slug: AppEventTypes.Government,
+    title: 'Администация',
+  },
+  {
+    slug: AppEventTypes.Party,
+    title: 'Вечеринки',
+  },
+  {
+    slug: AppEventTypes.Restaurants,
+    title: 'Рестараны',
+  },
+  {
+    slug: AppEventTypes.Theatre,
+    title: 'Театр',
   }
 ];

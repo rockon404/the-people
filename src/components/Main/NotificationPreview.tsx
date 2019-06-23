@@ -11,8 +11,8 @@ const StyledLink = styled(Link)`
 
 const Wrapper = styled(Paper)`
   padding: 16px;
-  margin-bottom: 16px;
-  border: 3px solid #ff1744;
+  margin-bottom: 8px;
+  border: 2px solid #ff1744;
 `;
 
 interface Props {
